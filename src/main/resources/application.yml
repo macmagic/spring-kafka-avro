@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        carOutput:
+          destination: car
+          content-type: application/*+avro
+        carInput:
+          destination: car
+          content-type: application/*+avro
+      kafka:
+        binder:
+          brokers: localhost:9092
+    schema-registry-client:
+      endpoint: http://localhost:8081

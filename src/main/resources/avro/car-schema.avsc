@@ -1,0 +1,39 @@
+{
+  "type": "record",
+  "name": "Car",
+  "namespace": "com.juanarroyes.springkafkaavro.schema",
+  "fields": [
+    {
+      "name" : "carId",
+      "type": "string"
+    },
+    {
+      "name": "brand",
+      "type": "string"
+    },
+    {
+      "name": "model",
+      "type": "string"
+    },
+    {
+      "name": "housePower",
+      "type": "string"
+    },
+    {
+      "name": "color",
+      "type": "string"
+    },
+    {
+      "name": "gears",
+      "type": "int"
+    },
+    {
+      "name": "year",
+      "type": "int"
+    },
+    {
+      "name": "raceCar",
+      "type": "boolean"
+    }
+  ]
+}

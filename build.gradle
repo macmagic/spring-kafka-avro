@@ -1,0 +1,79 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.1'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id "com.commercehub.gradle.plugin.avro" version "0.22.0"
+    id "com.commercehub.gradle.plugin.avro-base" version "0.22.0"
+}
+
+group = 'com.juanarroyes'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'https://packages.confluent.io/maven/'
+    }
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR9")
+}
+
+dependencies {
+    compile "org.apache.avro:avro:1.10.1"
+}
+
+dependencies {
+    //Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    //Spring Cloud Stream
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+
+    //Spring Cloud Schema Registry
+    implementation 'org.springframework.cloud:spring-cloud-schema-registry-client:1.1.0'
+
+    // Confluent AVRO libs
+    implementation 'io.confluent:kafka-schema-registry-client:5.3.0'
+    implementation ('io.confluent:kafka-avro-serializer:5.3.0') {
+        exclude group: 'log4j', 'module': 'log4j'
+        exclude group: 'org.slf4j',  'module': 'slf4j-log4j12'
+    }
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+//Avro plugin configuration
+avro {
+    createSetters = true
+    fieldVisibility = "PRIVATE"
+}
+
+generateAvroProtocol {
+    source("src/main/resources/avro")
+}
+generateAvroJava {
+    source("src/main/resources/avro")
+}
